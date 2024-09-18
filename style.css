@@ -1,0 +1,54 @@
+/* * {
+    margin: 0;
+    padding: 0;
+    box-sizing: content-box;
+} */
+
+/* .bg-image {
+    background-image: url(./assets/backgroung-images/lampos-aritonang-24gR_9lCdes-unsplash\ 1.png);
+    background-size: cover;
+    background-position: center;
+    height: 50vh;
+} */
+.responsive-text {
+    font-size: 1rem; /* font-size par défaut pour xs et sm*/
+}
+
+.mb {
+    margin-bottom: 0.5rem;  /* margin-bottom par défaut pour xs et sm*/
+}
+
+.form-height {
+    height: 4rem; /* hauteur de ligne par défault */
+}
+
+@media (min-width: 768px) {     /* écran medium (md) */
+    .responsive-text {
+        font-size: 1.5rem;
+    }
+    .mb {
+        margin-bottom: 4rem;
+    }
+}
+
+@media (min-width: 992px) {     /* écran large (lg) */
+    .responsive-text {
+        font-size: 2rem;
+    }
+    .mb {
+        margin-bottom: 7rem;
+    }
+}
+
+@media (min-width: 1200px) {     /* écran extra large (xl) */
+    
+}
+
+@media (min-width: 1400px) {     /* écran extra-extra large (xxl) */
+    .responsive-text {
+        font-size: 3rem;
+    }
+    .mb {
+        margin-bottom: 8rem;
+    }
+}
