@@ -7,30 +7,152 @@
     <link rel="stylesheet" href="./style.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Manrope:wght@200..800&display=swap" rel="stylesheet">
 </head>
 <body>
     <header>
-        <section class="position-relative">
-            <img src="./assets/backgroung-images/lampos-aritonang-24gR_9lCdes-unsplash 1.png" alt="Exemple de plat" class="img-fluid w-100">
-
-            <img src="./assets/logo/Logo.png" alt="Logo Les petits plats" class="img-fluid position-absolute top-0 start-0 p-3 p-md-4 p-lg-5 col-6 col-lg-4 col-xxl-3">
-
-            <p class="position-absolute top-50 start-50 translate-middle text-warning text-center fw-bold px-5 w-100 responsive-text">CHERCHEZ PARMI PLUS DE 1500 RECETTES DU QUOTIDIEN,SIMPLES ET DÉLICIEUSES</p>
-
-            <form action="" class="input-group position-absolute bottom-0 start-50 translate-middle w-75 mb">
-                <input type="search" class="form-control form-height" placeholder="Rechercher une recette, un ingrédient, ...">
-                <button type="submit" class="btn btn-dark position-absolute end-0 top-50 translate-middle rounded">
-                    <i class="bi bi-search"></i>
-                </button>
-            </form>
+        <section class="container-fluid m-0 p-0 position-relative">
+            <!-- Background image -->
+            <div class="row">
+                <div class="col">
+                    <img src="./assets/backgroung-images/lampos-aritonang-24gR_9lCdes-unsplash 1.png" alt="Exemple de plat" class="img-fluid w-100">
+                </div>
+            </div>
+            <!-- Logo -->
+            <div class="row">
+                <div class="col">
+                    <img src="./assets/logo/Logo.png" alt="Logo Les petits plats" class="img-fluid position-absolute top-0 start-0 p-3 p-md-4 p-lg-5 col-6 col-lg-4 col-xxl-3">
+                </div>
+            </div>
+            <!-- Main title -->
+            <div class="row">
+                <div class="col position-absolute top-50 start-50 translate-middle text-warning text-center fw-bold px-5 w-100 ">
+                    <h1 class="responsive-h1 anton">CHERCHEZ PARMI PLUS DE 1500 RECETTES DU QUOTIDIEN,SIMPLES ET DÉLICIEUSES</h1>
+                </div>
+            </div>
+            <!-- Search bar and button -->
+            <div class="row">
+                <div class="col position-absolute bottom-0 start-50 translate-middle w-75 mb">
+                    <form action="" class="input-group">
+                        <input type="search" class="form-control form-height rounded" placeholder="Rechercher une recette, un ingrédient, ..." aria-label="Recherche">
+                        <button type="submit" class="btn btn-dark position-absolute end-0 top-50 translate-middle rounded">
+                            <i class="bi bi-search"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
         </section>
     </header>
+
     <main>
+        <!-- Section Filtres / Nombre de recettes affichées -->
+        <section class="container-fluid bg-light p-5">
+            <div class="row d-flex">
+                <!-- Filtres -->
+                <div class="col-8 d-flex justify-content-evenly align-items-center">
+                    <!-- Ingrédients -->
+                    <div class="dropdown">
+                        <button class="btn bg-white btn-lg dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">Ingrédients
+                        </button>
+                        <ul class="dropdown-menu mx-2" aria-labelledby="dropdownMenuButton1">
+                            <li>
+                                <div class="container">
+                                    <form action="" class="input-group border rounded">
+                                        <input type="search" class="form-control border-0" aria-label="Recherche">
+                                        <button type="submit" class="btn">
+                                            <i class="bi bi-search"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </li>
+                            <li><a class="dropdown-item" href="#">Ingrédient 1</a></li>
+                            <li><a class="dropdown-item" href="#">Ingrédient 2</a></li>
+                            <li><a class="dropdown-item" href="#">Ingrédient 3</a></li>
+                        </ul>
+                    </div>
+                    <!-- Appareils -->
+                    <div class="dropdown">
+                        <button class="btn bg-white btn-lg dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">Appareils
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                            <li>
+                                <div class="container">
+                                    <form action="" class="input-group border rounded">
+                                        <input type="search" class="form-control border-0" aria-label="Recherche">
+                                        <button type="submit" class="btn">
+                                            <i class="bi bi-search"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </li>
+                            <li><a class="dropdown-item" href="#">Appareil 1</a></li>
+                            <li><a class="dropdown-item" href="#">Appareil 2</a></li>
+                            <li><a class="dropdown-item" href="#">Appareil 3</a></li>
+                        </ul>
+                    </div>
+                    <!-- Ustensiles -->
+                    <div class="dropdown">
+                        <button class="btn bg-white btn-lg dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">Ustensiles
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                            <li>
+                                <div class="container">
+                                    <form action="" class="input-group border rounded">
+                                        <input type="search" class="form-control border-0" aria-label="Recherche">
+                                        <button type="submit" class="btn">
+                                            <i class="bi bi-search"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </li>
+                            <li><a class="dropdown-item" href="#">Ustensile 1</a></li>
+                            <li><a class="dropdown-item" href="#">Ustensile 2</a></li>
+                            <li><a class="dropdown-item" href="#">Ustensile 3</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- Nombre de recettes affichées -->
+                <div class="col-4 text-center fw-bold fs-3 anton">1500 recettes</div>
+            </div>
 
+        </section>
+        <!-- Section Recettes -->
+        <section class="container-fluid bg-light py-3 px-5">
+            <div class="card" style="width: 20rem;">
+                <img src="assets/images/Recette01.jpg" class="img-fluid card-img-top" alt="Recette" style="height: 250px; object-fit: cover; width: 100%;">
+                <div class="card-body">
+                    <h5 class="card-title my-4 fw-bold">Limonade de coco</h5>
+                    <h6 class="card-subtitle my-3 fw-light">RECETTE</h6>
+                    <p class="card-text">Mettre les glaçons à votre goût dans le blender, ajouter le lait, la crème de coco, le jus de 2 citrons et le sucre. Mixer jusqu'à avoir la consistence désirée</p>
+                    <h6 class="card-subtitle my-3 fw-light">INGREDIENTS</h6>
+                    <div class="d-flex flex-wrap">
+                        <ul class="ps-0 pe-4">
+                            <li class="list-group-item">Lait de coco</li>
+                            <li class="list-group-item fw-light">400ml</li>
+                        </ul>
+                        <ul class="ps-0 pe-4">
+                            <li class="list-group-item">Jus de citron</li>
+                            <li class="list-group-item fw-light">2</li>
+                        </ul>
+                        <ul class="ps-0 pe-4">
+                            <li class="list-group-item">Crème de coco</li>
+                            <li class="list-group-item fw-light">4 cuillères</li>
+                        </ul>
+                        <ul class="ps-0 pe-4 pe-4">
+                            <li class="list-group-item">Sucre</li>
+                            <li class="list-group-item fw-light">20g</li>
+                        </ul>
+                        <ul class="ps-0 pe-4 pe-4">
+                            <li class="list-group-item">Glaçons</li>
+                            <li class="list-group-item fw-light">2</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
     </main>
-    <footer>
-
-    </footer>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 </html>
