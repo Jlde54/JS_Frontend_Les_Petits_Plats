@@ -12,12 +12,45 @@
     font-size: 1rem; /* font-size par défaut pour xs et sm*/
 }
 
+.bg-color-grey {
+    background-color: #EDEDED;
+}
+
+.bg-color-yellow {
+    background-color : #FFD15B;
+    border-color: #FFD15B;
+    color: black;
+}
+
 .mb {
     margin-bottom: 0.5rem;  /* margin-bottom par défaut pour xs et sm*/
 }
 
+.menu-max-height {
+    max-height: 20rem;
+    overflow-y: auto;
+}
+
 .form-height {
     height: 3rem; /* hauteur de ligne par défault */
+}
+
+.fs-12 {
+    font-size: 12px;
+}
+
+.fs-14 {
+    font-size: 14px;
+}
+
+.fs-18 {
+    font-size: 18px;
+}
+
+.btn.btn-dark.btn-hover:hover {
+    background-color : #FFD15B;
+    border-color: #FFD15B;
+    color: black;
 }
 
 @media (min-width: 768px) {     /* écran medium (md) */
@@ -46,8 +79,8 @@
 }
 
 @media (min-width: 1400px) {     /* écran extra-extra large (xxl) */
-    .responsive-text {
-        font-size: 3rem;
+    .responsive-h1 {
+        font-size: 2.75rem;
     }
     .mb {
         margin-bottom: 8rem;
