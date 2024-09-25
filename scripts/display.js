@@ -8,13 +8,24 @@ export function displayFilters() {
     const sectionFilters = document.querySelector("#section-filters");
     sectionFilters.replaceChildren();
 
-    const divFiltersTotRecipes = document.createElement("div");
-    setAttributes(divFiltersTotRecipes, {"id":"filters-totRecipes", "class": "row d-flex flex-column flex-md-row align-items-center"});
-    sectionFilters.appendChild(divFiltersTotRecipes);
-    
-    const divFilters = document.createElement("div");
-    setAttributes(divFilters, {"id":"filters", "class": "col-md-9 d-flex justify-content-between align-items-center"});
-    divFiltersTotRecipes.appendChild(divFilters);
+    const divSectionRow = document.createElement("div");
+    setAttributes(divSectionRow, {"class": "row"});
+    sectionFilters.appendChild(divSectionRow);
+
+    // Nombre total de recettes
+    const divTotRecipes = document.createElement("div");
+    setAttributes(divTotRecipes, {"class": "col-12 col-lg-3 order-1 order-lg-2 text-center mb-3 mb-lg-0 fw-bold fs-5 anton"});
+    divTotRecipes.textContent = `${recipes.length} recettes`;
+    divSectionRow.appendChild(divTotRecipes);
+
+    // Dropdown menus + alertes
+    const divDropdownAlerts = document.createElement("div");
+    setAttributes(divDropdownAlerts, {"class": "col-12 col-lg-9 order-2 order-lg-1"});
+    divSectionRow.appendChild(divDropdownAlerts);
+
+    const divDropdownAlertsRow = document.createElement("div");
+    setAttributes(divDropdownAlertsRow, {"class": "row"});
+    divDropdownAlerts.appendChild(divDropdownAlertsRow);
     
     displayFilter("ingredients", "ingredient", "Ingrédients");
     displayFilter("appliance", "", "Appareils");
@@ -56,19 +67,15 @@ export function displayFilters() {
             if(a > b) return 1;
             return 0;
         });
-
-        // Création de la <div> contenant le nombre total de recettes
-        const divFiltersTotRecipes = document.querySelector("#filters-totRecipes");
     
-        const divTotRecipes = document.createElement("div");
-        setAttributes(divTotRecipes, {"id":"totRecipes", "class": "col-md-3 text-end fw-bold fs-5 anton pb-3 pb-md-0 order-first order-md-2"});
-        divTotRecipes.textContent = `${recipes.length} recettes`;
-        divFiltersTotRecipes.appendChild(divTotRecipes);
-
         // Création de la <div> contenant le menu filtre
+        const divDropdownAlert = document.createElement("div");
+        setAttributes(divDropdownAlert, {"class": "col-md-4 text-center"});
+        divDropdownAlertsRow.appendChild(divDropdownAlert);
+
         const divDropdown = document.createElement("div");
-        setAttributes(divDropdown, {"class": "dropdown-center col-3"});
-        divFilters.appendChild(divDropdown);
+        setAttributes(divDropdown, {"class": "dropdown mb-3"});
+        divDropdownAlert.appendChild(divDropdown);
 
         // Bouton du dropdown menu
         const btnDropdown = document.createElement("button");
@@ -81,27 +88,20 @@ export function displayFilters() {
         setAttributes(ulDropdown, {"class": "dropdown-menu mx-2 menu-max-height", "aria-labelledby": `dropdownMenuButton${filterName}`});
         divDropdown.appendChild(ulDropdown);
 
-        const liDropdown = document.createElement("li");
-        ulDropdown.appendChild(liDropdown);
-
-        const divForm = document.createElement("div");
-        setAttributes(divForm, {"class": "container"});
-        liDropdown.appendChild(divForm);
-
-        const formInputgroup = document.createElement("form");
-        setAttributes(formInputgroup, {"class": "input-group border rounded", "action": ""});
-        divForm.appendChild(formInputgroup);
+        const divSearch = document.createElement("div");
+        setAttributes(divSearch, {"class": "container"});
+        ulDropdown.appendChild(divSearch);
 
         // Champ de recherche dans le dropdown menu
         const inputSearch = document.createElement("input");
-        setAttributes(inputSearch, {"class": "form-control border-0", "type": "search", "aria-label": "Recherche"});
-        formInputgroup.appendChild(inputSearch);
+        setAttributes(inputSearch, {"class": "border", "type": "search", "aria-label": "Recherche"});
+        divSearch.appendChild(inputSearch);
 
         // Bouton de submit de la recherche dans le dropdown menu
         const btnSubmit = document.createElement("button");
         setAttributes(btnSubmit, {"class": "btn", "type": "submit"});
         btnSubmit.innerHTML = "<i class='bi bi-search'></i>";
-        formInputgroup.appendChild(btnSubmit);
+        divSearch.appendChild(btnSubmit);
         
         // Affichage du contenu de la liste du dropdown menu
         arrayFilter.forEach(field => {
@@ -109,30 +109,47 @@ export function displayFilters() {
             setAttributes(liField, {"class": `${filterName}`});
             liField.innerHTML = `<a class="dropdown-item" href="#">${field}</a>`;
             ulDropdown.appendChild(liField);
-
+            
+            // Affichage de l'item sélectionné 
             liField.addEventListener("click", () => {
                 switch (filterName) {
                     case "ingredients":
-                        const selectedItem1 = document.querySelector("#selected-item1");
+                        const selectedItem1 = document.querySelector(`#selected-item-${filterName}`);
                         selectedItem1.innerHTML = `${field}`;
                         selectedItem1.classList.add("show");
                         selectedItem1.classList.remove("fade");
-                        // document.querySelector("#selected-item1").innerHTML = `${field} <a>x</a>`;
-                        // document.querySelector("#selected-item1").className += "visibility-visible bg-color-yellow rounded-pill d-flex justify-content-between";
                         break;
                     case "appliance":
-                        document.querySelector("#selected-item2").innerHTML = `${field} <span><a>x</a></span>`;
-                        document.querySelector("#selected-item2").className += "visibility-visible bg-color-yellow rounded-pill d-flex justify-content-between";
+                        const selectedItem2 = document.querySelector(`#selected-item-${filterName}`);
+                        selectedItem2.innerHTML = `${field}`;
+                        selectedItem2.classList.add("show");
+                        selectedItem2.classList.remove("fade");
                         break;
                     case "ustensils":
-                        document.querySelector("#selected-item3").innerHTML = `${field} <span><a>x</a></span>`;
-                        document.querySelector("#selected-item3").className += "visibility-visible bg-color-yellow rounded-pill d-flex justify-content-between";
+                        const selectedItem3 = document.querySelector(`#selected-item-${filterName}`);
+                        selectedItem3.innerHTML = `${field}`;
+                        selectedItem3.classList.add("show");
+                        selectedItem3.classList.remove("fade");
                         break;
                     default:
                         break;
                 }
             })
         })
+
+        // Champ qui contiendra l'item selectionné dans le dropdown menu
+
+        const divSelectedItem = document.createElement("div");
+        setAttributes(divSelectedItem, {"id": `selected-item-${filterName}`, "class": "alert alert-dismissible p-3 col-3 fade", "role": "alert"});
+        divDropdownAlert.appendChild(divSelectedItem);
+
+        const spanSelectedItem = document.createElement("span");
+        setAttributes(spanSelectedItem, {"id": `span-item-${filterName}`});
+        divSelectedItem.appendChild(spanSelectedItem);
+
+        const divSelectedBtn = document.createElement("button");
+        setAttributes(divSelectedBtn, {"type": "button", "class": "btn-close", "data-bs-dismiss": "alert", "aria-label": "Close"});
+        divSelectedItem.appendChild(divSelectedBtn);
     }
 }
 
