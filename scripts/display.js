@@ -1,6 +1,6 @@
 
 /********************************************************************
- * @description - Appel de l'affichage des Filtres
+ * @description - Affichage de la section des Filtres
  * @function (displayFilters)
  */
 export function displayFilters() {
@@ -106,7 +106,7 @@ export function displayFilters() {
         setAttributes(btnSubmit, {"class": "search-button"});
         btnSubmit.innerHTML = "<i class='bi bi-search'></i>";
         divSearch.appendChild(btnSubmit);
-        // Listener sur la recherche dans le dropdown menu pour filtrer les options
+        // Listener sur le champ de recherche dans le dropdown menu pour filtrer les options
         btnSubmit.addEventListener("click", (event) => {
             const filter = inputSearch.value.toLowerCase();   // Champ de recherche en minuscules
             const dropdownMenu = btnDropdown.nextElementSibling;    // retourne l'élément immédiatement suivant
@@ -129,13 +129,45 @@ export function displayFilters() {
             liField.innerHTML = `<a class="dropdown-item" href="#">${field}</a>`;
             ulDropdown.appendChild(liField);
             
-            // Listener pour l'affichage de l'item sélectionné au clic
-            liField.addEventListener("click", () => {   // Affichage de la sélection
-                        const divSelected = document.querySelector(`#selected-item-${filterName}`);
-                        const spanSelected = document.querySelector(`#span-item-${filterName}`);
-                        spanSelected.innerHTML = `${field}`;
-                        divSelected.classList.remove("hide");
-                        divSelected.classList.add("show", "fade");
+            // Listener sur l'item sélectionné dans le dropdown menu
+            liField.addEventListener("click", () => {
+                const divSelected = document.querySelector(`#selected-item-${filterName}`);
+                const spanSelected = document.querySelector(`#span-item-${filterName}`);
+                spanSelected.innerHTML = `${field}`;
+                divSelected.classList.remove("hide");
+                divSelected.classList.add("show", "fade");
+                // Filtre sur l'item sélectionné
+                const results = [];
+                for (let i = 0; i < recipes.length; i++) {
+                    const recipe = recipes[i];
+                    if (filterName === "ingredients") {
+                        for (let j = 0; j < recipe.ingredients.length; j++) {
+                            const ingredient = recipe.ingredients[j].ingredient.toLowerCase();
+                            if (ingredient === field.toLowerCase()) {
+                                results.push(recipe);
+                                break;
+                            }
+                        }
+                    } else if (filterName === "appliance") {
+                        const appliance = recipe.appliance.toLowerCase();
+                        if (appliance === field.toLowerCase()) {
+                            console.log("appliance : ", appliance)
+                            results.push(recipe);
+                        }
+                    } else if (filterName === "ustensils") {
+                        for (let j = 0; j < recipe.ustensils.length; j++) {
+                            const ustensils = recipe.ustensils[j].toLowerCase();
+                            if (ustensils === field.toLowerCase()) {
+                                results.push(recipe);
+                                break;
+                            }
+                        }
+                    }
+                }
+                const divTotRecipes = document.querySelector("#tot-recipes");
+                divTotRecipes.textContent = `${results.length} recettes`;
+
+                displayRecipes (results);
             })
         })
 
@@ -245,57 +277,6 @@ export function displayRecipes (recipes) {
             ulListgroup.appendChild(liListgroupitem2);
         })
     });
-}
-
-/********************************************************************
- * @description - affichage des champs sélectionnés
- * @function (displaySelectedItems)
- */
-export function displaySelectedItems (){
-    const sectionFilters = document.querySelector("#section-filters");
-
-    const divSelectedFields = document.createElement("div");
-    setAttributes(divSelectedFields, {"id": "selectFields"});
-    sectionFilters.appendChild(divSelectedFields);
-
-    const divSelectedRow = document.createElement("div");
-    setAttributes(divSelectedRow, {"class": "mt-5 col-md-9 d-flex justify-content-between align-items-center"});
-    divSelectedFields.appendChild(divSelectedRow);
-
-    // Champs contenant l'item selectionné dans la liste
-
-    const divSelectedItem1 = document.createElement("div");
-    setAttributes(divSelectedItem1, {"id": "selected-item1", "class": "alert alert-dismissible p-3 col-3 fade", "role": "alert"});
-    divSelectedRow.appendChild(divSelectedItem1);
-
-    const spanSelectedItem1 = document.createElement("span");
-    setAttributes(spanSelectedItem1, {"id": "span-item1"});
-    divSelectedItem1.appendChild(spanSelectedItem1);
-
-    const divSelectedBtn1 = document.createElement("button");
-    setAttributes(divSelectedBtn1, {"class": "btn-close", "data-bs-dismiss": "alert", "aria-label": "Close"});
-    divSelectedItem1.appendChild(divSelectedBtn1);
-
-    const divSelectedItem2 = document.createElement("div");
-    setAttributes(divSelectedItem2, {"id": "selected-item2", "class": "p-3 col-3 visibility-hidden"});
-    divSelectedRow.appendChild(divSelectedItem2);
-
-    const divSelectedItem3 = document.createElement("div");
-    setAttributes(divSelectedItem3, {"id": "selected-item3", "class": "p-3 col-3 visibility-hidden"});
-    divSelectedRow.appendChild(divSelectedItem3);
-}
-
-/********************************************************************
- * @description - affichage du total de recettes
- * @function (displayTotRecipes)
- */
-export function displayTotRecipes () {
-    const divFiltersTotRecipes = document.querySelector("#filters-totRecipes");
-    
-    const divTotRecipes = document.createElement("div");
-    setAttributes(divTotRecipes, {"id":"totRecipes", "class": "col-md-3 text-end fw-bold fs-5 anton pb-3 pb-md-0 order-first order-md-2"});
-    divTotRecipes.textContent = `${recipes.length} recettes`;
-    divFiltersTotRecipes.appendChild(divTotRecipes);
 }
 
 /********************************************************************

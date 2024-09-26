@@ -2,9 +2,6 @@
 // *********
 import { displayFilters } from "../scripts/display.js";
 import { displayRecipes } from "../scripts/display.js";
-import { displayTotRecipes } from "../scripts/display.js";
-import { displaySelectedItems } from "../scripts/display.js";
-
 /********************************************************************
  * @description - initialisation de la page d'accueil (index.html)
  * @function (init)
@@ -12,8 +9,6 @@ import { displaySelectedItems } from "../scripts/display.js";
 function init() {
     displayRecipes(recipes);
     displayFilters ();
-    // displayTotRecipes ();
-    // displaySelectedItems ();
 }
 
 document.addEventListener('DOMContentLoaded', () => {

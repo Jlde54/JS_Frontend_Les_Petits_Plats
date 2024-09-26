@@ -1,18 +1,33 @@
 import { displayRecipes } from "../scripts/display.js";
-
-// Listener sur lencodage dans la barre de recherche
-document.querySelector("#searchBar").addEventListener("input", (event) => {
+//***********************************************************
+// Listener sur l'encodage dans la barre de recherche principale
+document.querySelector("#searchbar").addEventListener("input", (event) => {
     const query = event.target.value;
 
     // Lancer la recherche si au moins 3 caractères sont entrés
     if (query.length >= 3) {
         searchRecipes(query);
-    } else {
-        // Vider les résultats si moins de 3 caractères
+    }
+
+    if (query === "") {
+        const divTotRecipes = document.querySelector("#tot-recipes");
+        divTotRecipes.textContent = `${recipes.length} recettes`;
+        displayRecipes (recipes);
     }
 });
+//***********************************************************
+// Listener sur la loupe dans la barre de recherche
+document.querySelector("#btn-searchbar").addEventListener("click", (event) => {
+    const query = document.querySelector("#searchbar").value;
+    searchRecipes(query);
+});
 
-// Fonction de recherche
+
+/***********************************************************
+ * @description - Fonction de recherche
+ * @function (searchRecipes)
+ * @param {*} query 
+ */
 function searchRecipes(query) {
     // Convertir la requête en minuscule pour une recherche insensible à la casse
     const searchQuery = query.toLowerCase();
