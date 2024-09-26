@@ -14,7 +14,7 @@ export function displayFilters() {
 
     // Nombre total de recettes
     const divTotRecipes = document.createElement("div");
-    setAttributes(divTotRecipes, {"class": "col-12 col-lg-3 order-1 order-lg-2 text-center mb-3 mb-lg-0 fw-bold fs-5 anton"});
+    setAttributes(divTotRecipes, {"id": "tot-recipes", "class": "col-12 col-lg-3 order-1 order-lg-2 text-center mb-3 mb-lg-0 fw-bold fs-5 anton"});
     divTotRecipes.textContent = `${recipes.length} recettes`;
     divSectionRow.appendChild(divTotRecipes);
 
@@ -79,8 +79,9 @@ export function displayFilters() {
 
         // Bouton du dropdown menu
         const btnDropdown = document.createElement("button");
-        setAttributes(btnDropdown, {"class": "btn bg-white btn-lg dropdown-toggle fs-6", "type": "button", "id": `dropdownMenuButton${filterName}`, "data-bs-toggle": "dropdown", "aria-expanded": "false"});
-        btnDropdown.textContent = titleName;
+        setAttributes(btnDropdown, {"class": "btn bg-white btn-lg fs-6 w-100", "type": "button", "id": `dropdownMenuButton${filterName}`, "data-bs-toggle": "dropdown", "aria-expanded": "false"});
+        // btnDropdown.textContent = titleName;
+        btnDropdown.innerHTML = `${titleName}<i class="bi bi-chevron-down ms-5 hevron"></i>`;
         divDropdown.appendChild(btnDropdown);
 
         // Liste
@@ -88,20 +89,38 @@ export function displayFilters() {
         setAttributes(ulDropdown, {"class": "dropdown-menu mx-2 menu-max-height", "aria-labelledby": `dropdownMenuButton${filterName}`});
         divDropdown.appendChild(ulDropdown);
 
+        const liSearch = document.createElement("li");
+        ulDropdown.appendChild(liSearch);
+
         const divSearch = document.createElement("div");
-        setAttributes(divSearch, {"class": "container"});
-        ulDropdown.appendChild(divSearch);
+        setAttributes(divSearch, {"class": "search-container"});
+        liSearch.appendChild(divSearch);
 
         // Champ de recherche dans le dropdown menu
         const inputSearch = document.createElement("input");
-        setAttributes(inputSearch, {"class": "border", "type": "search", "aria-label": "Recherche"});
+        setAttributes(inputSearch, {"class": "border search-input", "type": "text", "aria-label": "Recherche"});
         divSearch.appendChild(inputSearch);
 
         // Bouton de submit de la recherche dans le dropdown menu
         const btnSubmit = document.createElement("button");
-        setAttributes(btnSubmit, {"class": "btn", "type": "submit"});
+        setAttributes(btnSubmit, {"class": "search-button"});
         btnSubmit.innerHTML = "<i class='bi bi-search'></i>";
         divSearch.appendChild(btnSubmit);
+        // Listener sur la recherche dans le dropdown menu pour filtrer les options
+        btnSubmit.addEventListener("click", (event) => {
+            const filter = inputSearch.value.toLowerCase();   // Champ de recherche en minuscules
+            const dropdownMenu = btnDropdown.nextElementSibling;    // retourne l'élément immédiatement suivant
+            const items = dropdownMenu.querySelectorAll('a.dropdown-item');
+            items.forEach(item => {
+                const text = item.textContent || item.innerText;
+                if (text.toLowerCase().indexOf(filter) > -1) {
+                    item.style.display = ""; // Afficher l'élément
+                } else {
+                    item.style.display = "none"; // Masquer l'élément
+                }
+            })
+            event.stopPropagation();
+        })
         
         // Affichage du contenu de la liste du dropdown menu
         arrayFilter.forEach(field => {
@@ -110,45 +129,32 @@ export function displayFilters() {
             liField.innerHTML = `<a class="dropdown-item" href="#">${field}</a>`;
             ulDropdown.appendChild(liField);
             
-            // Affichage de l'item sélectionné 
-            liField.addEventListener("click", () => {
-                switch (filterName) {
-                    case "ingredients":
-                        const selectedItem1 = document.querySelector(`#selected-item-${filterName}`);
-                        selectedItem1.innerHTML = `${field}`;
-                        selectedItem1.classList.add("show");
-                        selectedItem1.classList.remove("fade");
-                        break;
-                    case "appliance":
-                        const selectedItem2 = document.querySelector(`#selected-item-${filterName}`);
-                        selectedItem2.innerHTML = `${field}`;
-                        selectedItem2.classList.add("show");
-                        selectedItem2.classList.remove("fade");
-                        break;
-                    case "ustensils":
-                        const selectedItem3 = document.querySelector(`#selected-item-${filterName}`);
-                        selectedItem3.innerHTML = `${field}`;
-                        selectedItem3.classList.add("show");
-                        selectedItem3.classList.remove("fade");
-                        break;
-                    default:
-                        break;
-                }
+            // Listener pour l'affichage de l'item sélectionné au clic
+            liField.addEventListener("click", () => {   // Affichage de la sélection
+                        const divSelected = document.querySelector(`#selected-item-${filterName}`);
+                        const spanSelected = document.querySelector(`#span-item-${filterName}`);
+                        spanSelected.innerHTML = `${field}`;
+                        divSelected.classList.remove("hide");
+                        divSelected.classList.add("show", "fade");
             })
         })
 
         // Champ qui contiendra l'item selectionné dans le dropdown menu
-
         const divSelectedItem = document.createElement("div");
-        setAttributes(divSelectedItem, {"id": `selected-item-${filterName}`, "class": "alert alert-dismissible p-3 col-3 fade", "role": "alert"});
+        setAttributes(divSelectedItem, {"id": `selected-item-${filterName}`, "class": "alert bg-color-yellow alert-dismissible p-3 fade hide d-flex", "role": "alert"});
         divDropdownAlert.appendChild(divSelectedItem);
 
+        divSelectedItem.addEventListener("click", () => {   // Fermeture de la sélection
+            divSelectedItem.classList.add('hide');
+            divSelectedItem.classList.remove('show');
+        })
+
         const spanSelectedItem = document.createElement("span");
-        setAttributes(spanSelectedItem, {"id": `span-item-${filterName}`});
+        setAttributes(spanSelectedItem, {"id": `span-item-${filterName}`, "class": "fs-14"});
         divSelectedItem.appendChild(spanSelectedItem);
 
         const divSelectedBtn = document.createElement("button");
-        setAttributes(divSelectedBtn, {"type": "button", "class": "btn-close", "data-bs-dismiss": "alert", "aria-label": "Close"});
+        setAttributes(divSelectedBtn, {"type": "button", "class": "btn-close", "aria-label": "Close"});
         divSelectedItem.appendChild(divSelectedBtn);
     }
 }
@@ -157,7 +163,8 @@ export function displayFilters() {
  * @description - affichage des cartes recettes
  * @function (displayRecipes)
  */
-export function displayRecipes () {
+export function displayRecipes (recipes) {
+
     const divRecipes = document.querySelector("#recipes");
     divRecipes.replaceChildren();  // Supprime tous les enfants de l'élément '#recipes'
 

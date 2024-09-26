@@ -10,10 +10,10 @@ import { displaySelectedItems } from "../scripts/display.js";
  * @function (init)
  */
 function init() {
-    displayRecipes();
+    displayRecipes(recipes);
     displayFilters ();
     // displayTotRecipes ();
-    displaySelectedItems ();
+    // displaySelectedItems ();
 }
 
 document.addEventListener('DOMContentLoaded', () => {
