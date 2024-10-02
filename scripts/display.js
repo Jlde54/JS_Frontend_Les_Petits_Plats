@@ -39,34 +39,7 @@ export function displayFilters() {
      * @param {titleName} - nom du titre à afficher dans le bouton du filtre
      */
     function displayFilter (filterName, fieldName, titleName) {
-        // Remplissage du tableau "arrayFilter" avec les options correspondantes au filtre
-        let arrayFilter = [];
-        recipes.forEach(recipe => {
-            if (filterName === "ingredients") {
-                recipe[filterName].forEach(item => {
-                    if (!arrayFilter.includes(item[fieldName])) {
-                        arrayFilter.push(item[fieldName])
-                    }
-                })
-            } else if (filterName === "appliance") {
-                if (!arrayFilter.includes(recipe.appliance)) {
-                    arrayFilter.push(recipe.appliance)
-                }
-            } else if (filterName === "ustensils") {
-                recipe[filterName].forEach(item => {
-                    if (!arrayFilter.includes(item)) {
-                        arrayFilter.push(item)
-                    }
-                })
-            }
-        })
-
-        // Tri du tableau arrayFilter par ordre alphabétique
-        arrayFilter.sort((a, b) => {
-            if(a < b) return -1;
-            if(a > b) return 1;
-            return 0;
-        });
+        const arrayFilter = displayOptions(filterName, fieldName, recipes)
     
         // Création de la <div> contenant le menu filtre
         const divDropdownAlert = document.createElement("div");
@@ -80,11 +53,10 @@ export function displayFilters() {
         // Bouton du dropdown menu
         const btnDropdown = document.createElement("button");
         setAttributes(btnDropdown, {"class": "btn bg-white btn-lg fs-6 w-100", "type": "button", "id": `dropdownMenuButton${filterName}`, "data-bs-toggle": "dropdown", "aria-expanded": "false"});
-        // btnDropdown.textContent = titleName;
         btnDropdown.innerHTML = `${titleName}<i class="bi bi-chevron-down ms-5 hevron"></i>`;
         divDropdown.appendChild(btnDropdown);
 
-        // Liste
+        // Dropdown menu
         const ulDropdown = document.createElement("ul");
         setAttributes(ulDropdown, {"class": "dropdown-menu mx-2 menu-max-height", "aria-labelledby": `dropdownMenuButton${filterName}`});
         divDropdown.appendChild(ulDropdown);
@@ -148,10 +120,10 @@ export function displayFilters() {
                                 break;
                             }
                         }
+
                     } else if (filterName === "appliance") {
                         const appliance = recipe.appliance.toLowerCase();
                         if (appliance === field.toLowerCase()) {
-                            console.log("appliance : ", appliance)
                             results.push(recipe);
                         }
                     } else if (filterName === "ustensils") {
@@ -168,6 +140,7 @@ export function displayFilters() {
                 divTotRecipes.textContent = `${results.length} recettes`;
 
                 displayRecipes (results);
+                // updateFilters(results);
             })
         })
 
@@ -191,9 +164,45 @@ export function displayFilters() {
     }
 }
 
+function displayOptions (filterName, fieldName, recipes) {
+    // Remplissage du tableau "arrayFilter" avec les options correspondantes au filtre en paramètre
+    let arrayFilter = [];
+    recipes.forEach(recipe => {
+        if (filterName === "ingredients") {
+            recipe[filterName].forEach(item => {
+                if (!arrayFilter.includes(item[fieldName])) {
+                    arrayFilter.push(item[fieldName])
+                }
+            })
+        } else if (filterName === "appliance") {
+            if (!arrayFilter.includes(recipe.appliance)) {
+                arrayFilter.push(recipe.appliance)
+            }
+        } else if (filterName === "ustensils") {
+            recipe[filterName].forEach(item => {
+                if (!arrayFilter.includes(item)) {
+                    arrayFilter.push(item)
+                }
+            })
+        }
+    })
+
+    // Tri du tableau arrayFilter par ordre alphabétique
+    arrayFilter.sort((a, b) => {
+        if(a < b) return -1;
+        if(a > b) return 1;
+        return 0;
+    });
+
+    
+
+    return arrayFilter;
+}
+
 /********************************************************************
  * @description - affichage des cartes recettes
  * @function (displayRecipes)
+ * @param {recipes} - recettes à afficher
  */
 export function displayRecipes (recipes) {
 

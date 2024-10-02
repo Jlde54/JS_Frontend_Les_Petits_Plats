@@ -8,7 +8,7 @@ import { displayRecipes } from "../scripts/display.js";
  */
 function init() {
     displayRecipes(recipes);
-    displayFilters ();
+    displayFilters (recipes);
 }
 
 document.addEventListener('DOMContentLoaded', () => {
