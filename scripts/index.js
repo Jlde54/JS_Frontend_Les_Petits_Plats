@@ -1,14 +1,21 @@
 // Import(s)
 // *********
-import { displayFilters } from "../scripts/display.js";
-import { displayRecipes } from "../scripts/display.js";
+import { displayFilters } from "../scripts/filters.js";
+import { displayRecipes } from "../scripts/recipes.js";
+import { updateTotRecipes } from "../scripts/recipes.js";
+
+// Variable(s) globale(s)
+// **********************
+export let recipesMainSearch = Array.from(recipes);
+
 /********************************************************************
  * @description - initialisation de la page d'accueil (index.html)
  * @function (init)
  */
 function init() {
-    displayRecipes(recipes);
-    displayFilters (recipes);
+    displayRecipes (recipes);   // Affichage des cartes recettes
+    displayFilters (recipes);   // Création des éléments du DOM pour les Filtres et le total des recettes
+    updateTotRecipes (recipes); // Mise à jour du nombre total des recettes
 }
 
 document.addEventListener('DOMContentLoaded', () => {

@@ -53,9 +53,9 @@
     color: black;
 }
 
-.rotate {
+.rotate-180 {
     transform: rotate(180deg);
-    transition: transform 0.3s ease;
+    transition: transform 0.1s ease;
   }
 
 /* Style pour le champ de recherche dans le dropdown */
@@ -80,6 +80,10 @@
 }
 .dropdown-menu {
     width: 100%; /* Correspond à l'alerte */
+}
+
+.dropdown-item:hover {
+    background-color : #FFD15B;
 }
 
 /* Media queries */
