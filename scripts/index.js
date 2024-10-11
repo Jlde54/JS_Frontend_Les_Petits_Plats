@@ -6,7 +6,7 @@ import { updateTotRecipes } from "../scripts/recipes.js";
 
 // Variable(s) globale(s)
 // **********************
-export let recipesMainSearch = Array.from(recipes);
+// export let recipesMainSearch = Array.from(recipes);
 
 /********************************************************************
  * @description - initialisation de la page d'accueil (index.html)
@@ -14,10 +14,10 @@ export let recipesMainSearch = Array.from(recipes);
  */
 function init() {
     displayRecipes (recipes);   // Affichage des cartes recettes
-    displayFilters (recipes);   // Création des éléments du DOM pour les Filtres et le total des recettes
+    displayFilters (recipes);   // Affichage des filtres et du total des recettes
     updateTotRecipes (recipes); // Mise à jour du nombre total des recettes
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', () => {   // attente que la structure HTML soit chargée
     init ();
 })

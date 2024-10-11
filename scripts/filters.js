@@ -22,12 +22,12 @@ export function displayFilters(recipes) {
     setAttributes(divTotRecipes, {"id": "tot-recipes", "class": "col-12 col-lg-5 order-1 order-lg-2 text-center text-lg-end pt-1 mb-3 mb-lg-0 fw-bold fs-5 anton"});
     divSectionRow.appendChild(divTotRecipes);
 
-    // div contenant les Dropdown menus + les alertes (options sélectionnées)
+    // div contenant les Dropdown menus + les options sélectionnées
     const divDropdownAlerts = document.createElement("div");
     setAttributes(divDropdownAlerts, {"class": "col-12 col-lg-7 order-2 order-lg-1"});
     divSectionRow.appendChild(divDropdownAlerts);
 
-    // div contenant les 3  Dropdown menus
+    // div contenant les 3 dropdown menus
     const divDropdownAlertsRow = document.createElement("div");
     setAttributes(divDropdownAlertsRow, {"class": "row"});
     divDropdownAlerts.appendChild(divDropdownAlertsRow);
@@ -45,7 +45,7 @@ export function displayFilters(recipes) {
      * @param {titleName} - nom du titre à afficher dans le bouton du filtre
      */
     function displayFilter (filterName, fieldName, titleName, recipes) {
-        // Création de la <div> contenant le menu filtre
+        // Création de la <div> contenant le dropdown menu
         const divDropdownAlert = document.createElement("div");
         setAttributes(divDropdownAlert, {"class": "col-md-4 text-center"});
         divDropdownAlertsRow.appendChild(divDropdownAlert);
@@ -65,7 +65,7 @@ export function displayFilters(recipes) {
             listenBtnFilters(`${filterName}`);
         })
 
-        // Contenu du Dropdown menu
+        // Liste contenant le champ de recherche et les options du Dropdown menu
         const ulDropdown = document.createElement("ul");
         setAttributes(ulDropdown, {"id": `dropdown-menu-${filterName}`, "class": "dropdown-menu mx-2 menu-max-height", "aria-labelledby": `btn-filter-${filterName}`});
         divDropdown.appendChild(ulDropdown);
@@ -98,6 +98,7 @@ export function displayFilters(recipes) {
             listenInputSearch(event, inputSearch, btnDropdown);
         })
 
+        // div contenant la liste des options
         const divOptions = document.createElement("div");
         setAttributes(divOptions, {"id": `div-options-${filterName}`});
         ulDropdown.appendChild(divOptions);
@@ -165,7 +166,7 @@ export function displayOptions (filterName, fieldName, recipes) {
         // Listener sur l'option sélectionnée dans le dropdown menu
         liField.addEventListener("click", (event) => {
             event.preventDefault();
-            listenSelectedOption(recipes, field, filterName, fieldName);
+            listenSelectedOption(field, filterName);
         })
     })
 }

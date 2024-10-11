@@ -70,7 +70,7 @@ export function listenBtnFilters(filterName) {
 export function listenInputSearch(event, inputSearch, btnDropdown) {
     const filter = inputSearch.value.toLowerCase();   // Champ de recherche en minuscules
     const dropdownMenu = btnDropdown.nextElementSibling;    // retourne l'élément immédiatement suivant
-    const items = dropdownMenu.querySelectorAll("a.dropdown-item");
+    const items = dropdownMenu.querySelectorAll("a.dropdown-item"); // Sélection des options
     items.forEach(item => {
         const text = item.textContent || item.innerText;
         if (text.toLowerCase().indexOf(filter) > -1) {
@@ -89,16 +89,17 @@ export function listenInputSearch(event, inputSearch, btnDropdown) {
  * @param {field} - option sélectionnée dans le dropdown menu
  * @param {filterName} - nom du filtre
  */
-export function listenSelectedOption (recipes, field, filterName, fieldName) {
+export function listenSelectedOption (field, filterName) {
     // Mise à jour de l'affichage des options sélectionnées
     const selectedList = document.querySelector(`#selected-list-${filterName}`);
     const listItems = selectedList.querySelectorAll("li");
     const listItemsArray = Array.from(listItems);
+    // Vérifier si l'option sélectionnée est déjà affichée
     let exists = false;
     exists = listItemsArray.some(li => li.textContent.trim().toLowerCase() === field.trim().toLowerCase());
 
+    // Créer un nouvel élément <li> dans la liste sélectionnée
     if (!exists) {
-        // Créer un nouvel élément <li> pour la liste sélectionnée
         const newLi = document.createElement("li");
         newLi.classList.add("list-group-item", "bg-color-yellow", "d-flex", "justify-content-between", "align-items-center", "mb-1");
 
@@ -119,26 +120,31 @@ export function listenSelectedOption (recipes, field, filterName, fieldName) {
         // Ajouter le nouvel élément <li> à la liste sélectionnée
         selectedList.appendChild(newLi);
 
-        // Ajouter un écouteur d'événement au bouton de suppression
+        // Listener sur le bouton de suppression de l'option sélectionnée
         deleteBtn.addEventListener("click", () => {
+            // suppression de l'option dans la liste affichée
             selectedList.removeChild(newLi);
+            // suppression de l'option dans le tableau correspondant
             let index = arrayFilters[`${filterName}`].findIndex(item => item === field);
             if (index !== -1) {
                 arrayFilters[`${filterName}`].splice(index, 1);
             }
             const results = filterRecipes (recipes, arrayFilters);
             displayRecipes (results);
+            displayOptions ("ingredients", "ingredient", results);
+            displayOptions ("appliance", "", results);
+            displayOptions ("ustensils", "", results);
             updateTotRecipes (results);
         });
     }
     // Filtrer les recettes sur les options sélectionnées dans tous les filtres
 
     const results = filterRecipes (recipes, arrayFilters);
-
     displayRecipes (results);
-
+    displayOptions ("ingredients", "ingredient", results);
+    displayOptions ("appliance", "", results);
+    displayOptions ("ustensils", "", results);
     updateTotRecipes (results);
-
     listenBtnFilters(filterName);
 }
 

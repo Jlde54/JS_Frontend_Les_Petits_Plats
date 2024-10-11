@@ -99,7 +99,7 @@ export function displayRecipes (recipes) {
  */
 export function updateTotRecipes (recipes) {
     const divTotRecipes = document.querySelector("#tot-recipes");
-    divTotRecipes.textContent = `${recipes.length} recettes`;
+    divTotRecipes.textContent = `${recipes.length} recette(s)`;
 }
 
 /***********************************************************
@@ -108,11 +108,10 @@ export function updateTotRecipes (recipes) {
  * @param {query} - caractères encodés dans la barre de recherche principale 
  */
 export function searchRecipes(query, recipes) {
-    // Convertir la requête en minuscule pour une recherche insensible à la casse
     const queryLowerCase = query.toLowerCase();
     const recipesMainSearch = [];
 
-    // Parcourir les recettes avec une boucle "for" classique
+    // Parcourir les recettes
     for (let i = 0; i < recipes.length; i++) {
         const recipe = recipes[i];
 
