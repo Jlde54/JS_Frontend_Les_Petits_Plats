@@ -10,6 +10,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Anton&family=Manrope:wght@200..800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./css/style.css">
+    <link rel="shortcut icon" href="#">
 </head>
 <body>
     <header>
@@ -24,9 +25,9 @@
                     <h1 class="responsive-h1 anton col position-absolute top-50 start-50 translate-middle text-warning text-center fw-bold px-5 w-75">CHERCHEZ PARMI PLUS DE 1500 RECETTES DU QUOTIDIEN,SIMPLES ET DÉLICIEUSES</h1>
                     <!-- Search bar and button -->
                     <form class="input-group position-absolute bottom-0 start-50 translate-middle w-75 mb form-height">
-                        <input id="searchbar" type="search" class="form-control border-0 fs-6 shadow-none" placeholder="Rechercher une recette, un ingrédient, ..." aria-label="Recherche">
-                        <div class="d-flex p-2 bg-white rounded-end">
-                            <button id="btn-searchbar" class="btn btn-dark btn-hover border-0" type="button">
+                        <input id="searchbar" type="search" class="form-control border-0 fs-6 shadow-none h-100" placeholder="Rechercher une recette, un ingrédient, ..." aria-label="Recherche">
+                        <div class="d-flex p-1 p-md-2 bg-white rounded-end h-100">
+                            <button id="btn-searchbar" class="btn btn-dark btn-hover border-0 d-flex align-items-center h-100" type="button">
                                 <i class="bi bi-search"></i>
                               </button>
                         </div>
@@ -34,6 +35,7 @@
                 </div>
             </div>
         </section>
+        <div id="alert-container" class="w-75 mt-1 mx-auto fw-bold"></div>
     </header>
 
     <main>

@@ -32,7 +32,7 @@
 }
 
 .form-height {
-    height: 3rem; /* hauteur de ligne par défault */
+    height: 2rem; /* hauteur de ligne par défault */
 }
 
 .fs-12 {
@@ -93,6 +93,9 @@
     }
     .mb {
         margin-bottom: 4rem;
+    }
+    .form-height {
+        height: 3rem;
     }
 }
 

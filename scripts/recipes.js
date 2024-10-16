@@ -3,6 +3,45 @@
 import { setAttributes } from "../scripts/utils.js";
 
 /********************************************************************
+ * @description - vérifier si un mot existe dans une chaîne
+ * @function (containsTerm)
+ * @param {string} - Chaîne de caractères
+ * @param {substring} - mot recherché
+ * @return {boolean} - true si le mot est trouvé
+ */
+function containsTerm(string, substring) {
+    for (let i = 0; i <= string.length - substring.length; i++) {
+        let match = true;
+        for (let j = 0; j < substring.length; j++) {
+            if (string[i + j] !== substring[j]) {
+                match = false;
+                break;
+            }
+        }
+        if (match) {
+            return true;
+        }
+    }
+    return false;
+}
+
+/********************************************************************
+ * @description - Affichage du message si aucune recette n'est trouvée
+ * @function (displayAlert)
+ * @param {searchbarContent} - contenu de la recherche
+ */
+export function displayAlert (searchbarContent) {
+    const alertContainer = document.querySelector("#alert-container");
+    alertContainer.replaceChildren();
+    const alert = document.createElement("div");
+    alert.className = `alert alert-danger alert-dismissible fade show text-center`;
+    alert.role = 'alert';
+    alert.innerHTML = `Aucune recette ne contient «${searchbarContent}» <br>Vous pouvez chercher « tarte aux pommes », « poisson », etc.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>`;
+    
+    alertContainer.appendChild(alert);
+}
+
+/********************************************************************
  * @description - Affichage des cartes recettes
  * @function (displayRecipes)
  * @param {recipes} - recettes à afficher
@@ -12,7 +51,10 @@ export function displayRecipes (recipes) {
     const divRecipes = document.querySelector("#recipes");
     divRecipes.replaceChildren();  // Supprime tous les enfants de l'élément '#recipes'
 
-    recipes.forEach(recipe => {
+    // recipes.forEach(recipe => {
+    for (let i = 0; i < recipes.length; i++) {
+        const recipe = recipes[i];
+
         const divCol = document.createElement("div");
         setAttributes(divCol, {"class": "col"});
         divRecipes.appendChild(divCol);
@@ -70,7 +112,10 @@ export function displayRecipes (recipes) {
         setAttributes(divList, {"class": "d-flex flex-wrap row-cols-2"});
         divcardBody.appendChild(divList);
 
-        recipe.ingredients.forEach(ingredient => {
+        // recipe.ingredients.forEach(ingredient => {
+        for (let j = 0; j < recipe.ingredients.length; j++) {
+            const ingredient = recipe.ingredients[j];
+
             const ulListgroup = document.createElement("ul");
             setAttributes(ulListgroup, {"class": "list-group ps-0 pe-4"});
             divList.appendChild(ulListgroup);
@@ -88,46 +133,83 @@ export function displayRecipes (recipes) {
                 ${ingredient.quantity ? `${ingredient.quantity}` : ''}
                 ${ingredient.unit ? `${ingredient.unit}` : ''}`;
             ulListgroup.appendChild(liListgroupitem2);
-        })
-    });
-}
-
-/********************************************************************
- * @description - Mise à jour du total des recettes
- * @function (updateTotRecipes)
- * @param {recipes} - recettes
- */
-export function updateTotRecipes (recipes) {
-    const divTotRecipes = document.querySelector("#tot-recipes");
-    divTotRecipes.textContent = `${recipes.length} recette(s)`;
+        }
+    };
 }
 
 /***********************************************************
  * @description - Fonction de recherche des recettes depuis la recherche principale
  * @function (searchRecipes)
  * @param {query} - caractères encodés dans la barre de recherche principale 
+ * @return {recipesMainSearch} - recettes sélectionnées
  */
 export function searchRecipes(query, recipes) {
-    const queryLowerCase = query.toLowerCase();
     const recipesMainSearch = [];
 
-    // Parcourir les recettes
-    for (let i = 0; i < recipes.length; i++) {
-        const recipe = recipes[i];
+    // Extraire les mots du champ de recherche
+    let searchTerms = [];
+    let term = "";
 
-        // Vérifier si le nom, la description contiennent la requête
-        if (recipe.name.toLowerCase().includes(queryLowerCase) || recipe.description.toLowerCase().includes(queryLowerCase)) {
-            recipesMainSearch.push(recipe);
+    for (let i = 0; i < query.length; i++) {
+        if (query[i] !== " ") {
+            term += query[i].toLowerCase(); // convertir en minuscules
         } else {
-            // Vérifier si les ingrédients contiennent la requête
-            for (let j = 0; j < recipe.ingredients.length; j++) {
-                const ingredient = recipe.ingredients[j].ingredient.toLowerCase();
-                if (ingredient.includes(queryLowerCase)) {
-                    recipesMainSearch.push(recipe);
-                    break; // Arrêter la boucle si un ingrédient correspond
-                }
+            if (term.length > 0) {
+                searchTerms.push(term); // séparer les mots
+                term = "";
             }
         }
     }
+    if (term.length > 0) {  // dernier mot
+        searchTerms.push(term);
+    }
+    
+    // Parcourir les recettes
+    for (let i = 0; i < recipes.length; i++) {
+        const recipe = recipes[i];
+        let recipeOK = true;
+        // Parcourir les termes recherchés
+        for (let j = 0; j < searchTerms.length; j++) {
+            // Recherche du terme dans le nom de la recette
+            if (!containsTerm(recipe.name.toLowerCase(), searchTerms[j])) {
+                // Recherche du terme dans la description
+                if (!containsTerm(recipe.description.toLowerCase(), searchTerms[j])) {
+                    // Recherche du terme dans les ingrédients
+                    let foundInIngredients = false;
+                    for (let k = 0; k < recipe.ingredients.length; k++) {
+                        if (containsTerm(recipe.ingredients[k].ingredient.toLowerCase(), searchTerms[j])) {
+                            foundInIngredients = true;
+                            break;
+                        }
+                    }
+                    if (!foundInIngredients) {
+                        recipeOK = false;
+                    }
+                }
+            }
+        }
+
+        if (recipeOK) {
+            recipesMainSearch.push(recipe);
+        }
+    }
+
     return (recipesMainSearch);
+}
+
+/********************************************************************
+ * @description - Mise à jour du total des recettes et affichage d'un message si aucune recette n'est trouvée
+ * @function (updateTotRecipes)
+ * @param {recipes} - recettes
+ * @param {origin} - origine de la recherche (main ou filter) : pour afficher le msg d'erreur si aucune recette n'est trouvée
+ */
+export function updateTotRecipes (recipes, origin) {
+    const divTotRecipes = document.querySelector("#tot-recipes");
+    divTotRecipes.textContent = `${recipes.length} recette(s)`;
+
+    if (recipes.length === 0 && origin === "main") {
+        const searchbarContent = document.querySelector("#searchbar").value;
+        
+        displayAlert(searchbarContent);
+    }
 }

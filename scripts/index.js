@@ -4,10 +4,6 @@ import { displayFilters } from "../scripts/filters.js";
 import { displayRecipes } from "../scripts/recipes.js";
 import { updateTotRecipes } from "../scripts/recipes.js";
 
-// Variable(s) globale(s)
-// **********************
-// export let recipesMainSearch = Array.from(recipes);
-
 /********************************************************************
  * @description - initialisation de la page d'accueil (index.html)
  * @function (init)

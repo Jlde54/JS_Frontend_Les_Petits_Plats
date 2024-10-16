@@ -47,7 +47,7 @@ export function displayFilters(recipes) {
     function displayFilter (filterName, fieldName, titleName, recipes) {
         // Création de la <div> contenant le dropdown menu
         const divDropdownAlert = document.createElement("div");
-        setAttributes(divDropdownAlert, {"class": "col-md-4 text-center"});
+        setAttributes(divDropdownAlert, {"id": `dropdown-${filterName}`, "class": "col-md-4 text-center"});
         divDropdownAlertsRow.appendChild(divDropdownAlert);
 
         const divDropdown = document.createElement("div");
@@ -57,13 +57,11 @@ export function displayFilters(recipes) {
         // Bouton d'ouverture du dropdown menu
         const btnDropdown = document.createElement("button");
         setAttributes(btnDropdown, {"class": "btn bg-white btn-lg fs-6 w-100 d-flex justify-content-between align-items-center", "type": "button", "id": `btn-filter-${filterName}`, "data-bs-toggle": "dropdown", "aria-expanded": "false"});
-        btnDropdown.innerHTML = `<span>${titleName}</span><i class="bi bi-chevron-down ms-5 chevron"></i>`;
+        btnDropdown.innerHTML = `<span>${titleName}</span><i class="bi bi-chevron-down ms-auto chevron"></i>`;
         divDropdown.appendChild(btnDropdown);
 
-        // Listener sur les boutons d'ouverture de chaque filtre
-        btnDropdown.addEventListener("click", () => {
-            listenBtnFilters(`${filterName}`);
-        })
+        // Listener sur les boutons d'ouverture de chaque filtre pour gérer le sens de l'icône chevron
+        listenBtnFilters(`${filterName}`);
 
         // Liste contenant le champ de recherche et les options du Dropdown menu
         const ulDropdown = document.createElement("ul");
@@ -87,13 +85,13 @@ export function displayFilters(recipes) {
             listenInputSearch(event, inputSearch, btnDropdown);
         })
 
-        // Bouton de submit de la recherche dans le dropdown menu
+        // Bouton de submit de la recherche dans le dropdown menu (loupe)
         const btnSubmit = document.createElement("button");
         setAttributes(btnSubmit, {"id": `search-btn-${filterName}`, "class": "search-button"});
         btnSubmit.innerHTML = "<i class='bi bi-search'></i>";
         divSearch.appendChild(btnSubmit);
         
-        // Listener sur le bouton de champ de recherche du dropdown menu pour filtrer les options
+        // Listener pour filtrer les options via le bouton loupe
         btnSubmit.addEventListener("click", (event) => {
             listenInputSearch(event, inputSearch, btnDropdown);
         })
@@ -103,7 +101,7 @@ export function displayFilters(recipes) {
         setAttributes(divOptions, {"id": `div-options-${filterName}`});
         ulDropdown.appendChild(divOptions);
 
-        // Appel de displayOptions pour créer les options présentes dans chaque filtre en fonction du contenu du paramètre "recipes)"
+        // Affichage des options pour chaque filtre
         displayOptions(filterName, fieldName, recipes);
         
         // Liste qui contiendra les options selectionnée dans le dropdown menu
@@ -117,7 +115,7 @@ export function displayFilters(recipes) {
 }
 
 /********************************************************************
- * @description - affichage des options dans chaque Filtre
+ * @description - génère et affiche les options dans chaque Filtre
  * @function (displayOptions)
  * @param {filterName} - nom de la propriété du filtre dans le fichier recipes.js
  * @param {fieldName} - nom du champ dans la propriété dans le fichier recipes.js
@@ -126,25 +124,30 @@ export function displayFilters(recipes) {
 export function displayOptions (filterName, fieldName, recipes) {
     // Remplissage du tableau "arrayFilter" avec les options correspondantes au filtre en paramètre
     let arrayFilter = [];
-    recipes.forEach(recipe => {
+
+    for (let i = 0; i < recipes.length; i++) {
+        const recipe = recipes[i];
+    
         if (filterName === "ingredients") {
-            recipe[filterName].forEach(item => {
+            for (let j = 0; j < recipe[filterName].length; j++) {
+                const item = recipe[filterName][j];
                 if (!arrayFilter.includes(item[fieldName])) {
-                    arrayFilter.push(item[fieldName])
+                    arrayFilter.push(item[fieldName]);
                 }
-            })
+            }
         } else if (filterName === "appliance") {
             if (!arrayFilter.includes(recipe.appliance)) {
-                arrayFilter.push(recipe.appliance)
+                arrayFilter.push(recipe.appliance);
             }
         } else if (filterName === "ustensils") {
-            recipe[filterName].forEach(item => {
+            for (let k = 0; k < recipe[filterName].length; k++) {
+                const item = recipe[filterName][k];
                 if (!arrayFilter.includes(item)) {
-                    arrayFilter.push(item)
+                    arrayFilter.push(item);
                 }
-            })
+            }
         }
-    })
+    }
 
     // Tri du tableau arrayFilter par ordre alphabétique
     arrayFilter.sort((a, b) => {
@@ -157,7 +160,20 @@ export function displayOptions (filterName, fieldName, recipes) {
     divOptions.replaceChildren();
     
     // Affichage du contenu de la liste du dropdown menu
-    arrayFilter.forEach(field => {
+    // arrayFilter.forEach(field => {
+    //     const liField = document.createElement("li");
+    //     setAttributes(liField, {"class": `${filterName}`});
+    //     liField.innerHTML = `<a class="dropdown-item" href="#">${field}</a>`;
+    //     divOptions.appendChild(liField);
+        
+    //     // Listener sur l'option sélectionnée dans le dropdown menu
+    //     liField.addEventListener("click", (event) => {
+    //         event.preventDefault();
+    //         listenSelectedOption(field, filterName);
+    //     })
+    // })
+    for (let i = 0; i < arrayFilter.length; i++) {
+        const field = arrayFilter[i];
         const liField = document.createElement("li");
         setAttributes(liField, {"class": `${filterName}`});
         liField.innerHTML = `<a class="dropdown-item" href="#">${field}</a>`;
@@ -167,6 +183,6 @@ export function displayOptions (filterName, fieldName, recipes) {
         liField.addEventListener("click", (event) => {
             event.preventDefault();
             listenSelectedOption(field, filterName);
-        })
-    })
+        });
+    }
 }
