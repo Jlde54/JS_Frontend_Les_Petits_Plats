@@ -5,10 +5,5 @@
  * @param {attrs} - attribut(s) à ajouter à l'élément
  */
 export function setAttributes(el, attrs) {
-    // Object.entries(attrs).forEach(([key, value]) => el.setAttribute(key, value))
-    const entries = Object.entries(attrs);
-    for (let i = 0; i < entries.length; i++) {
-        const [key, value] = entries[i];
-        el.setAttribute(key, value);
-    }
+    Object.entries(attrs).forEach(([key, value]) => el.setAttribute(key, value))
 }

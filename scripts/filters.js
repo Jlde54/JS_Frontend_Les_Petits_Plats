@@ -97,9 +97,12 @@ export function displayFilters(recipes) {
         })
 
         // div contenant la liste des options
-        const divOptions = document.createElement("div");
-        setAttributes(divOptions, {"id": `div-options-${filterName}`});
-        ulDropdown.appendChild(divOptions);
+        const liOptions = document.createElement("li");
+        ulDropdown.appendChild(liOptions);
+
+        const divOptions = document.createElement("ul");
+        setAttributes(divOptions, {"id": `div-options-${filterName}`, "class": "list-unstyled"});
+        liOptions.appendChild(divOptions);
 
         // Affichage des options pour chaque filtre
         displayOptions(filterName, fieldName, recipes);
@@ -160,20 +163,7 @@ export function displayOptions (filterName, fieldName, recipes) {
     divOptions.replaceChildren();
     
     // Affichage du contenu de la liste du dropdown menu
-    // arrayFilter.forEach(field => {
-    //     const liField = document.createElement("li");
-    //     setAttributes(liField, {"class": `${filterName}`});
-    //     liField.innerHTML = `<a class="dropdown-item" href="#">${field}</a>`;
-    //     divOptions.appendChild(liField);
-        
-    //     // Listener sur l'option sélectionnée dans le dropdown menu
-    //     liField.addEventListener("click", (event) => {
-    //         event.preventDefault();
-    //         listenSelectedOption(field, filterName);
-    //     })
-    // })
-    for (let i = 0; i < arrayFilter.length; i++) {
-        const field = arrayFilter[i];
+    arrayFilter.forEach(field => {
         const liField = document.createElement("li");
         setAttributes(liField, {"class": `${filterName}`});
         liField.innerHTML = `<a class="dropdown-item" href="#">${field}</a>`;
@@ -183,6 +173,6 @@ export function displayOptions (filterName, fieldName, recipes) {
         liField.addEventListener("click", (event) => {
             event.preventDefault();
             listenSelectedOption(field, filterName);
-        });
-    }
+        })
+    })
 }
