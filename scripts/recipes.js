@@ -10,7 +10,20 @@ import { setAttributes } from "../scripts/utils.js";
  * @return {boolean} - true si le mot est trouvé
  */
 function containsTerm(string, substring) {
-    return string.includes(substring);
+    // return string.includes(substring);
+    for (let i = 0; i <= string.length - substring.length; i++) {
+        let match = true;
+        for (let j = 0; j < substring.length; j++) {
+            if (string[i + j] !== substring[j]) {
+                match = false;
+                break;
+            }
+        }
+        if (match) {
+            return true;
+        }
+    }
+    return false;
 }
 
 /********************************************************************
@@ -126,23 +139,77 @@ export function displayRecipes (recipes) {
  * @return {recipesMainSearch} - recettes sélectionnées
  */
 export function searchRecipes(query, recipes) {
+    console.log("Branch main");
+    
     // Extraire les mots du champ de recherche en utilisant split et filter
-    const searchTerms = query
-        .toLowerCase()
-        .split(" ")
-        .filter(term => term.length > 0);
+    // const searchTerms = query
+    //     .toLowerCase()
+    //     .split(" ")
+    //     .filter(term => term.length > 0);
 
-    // Filtrer les recettes qui correspondent aux termes de recherche
-    return recipes.filter(recipe => {
-        // Vérifier si tous les termes de recherche sont présents
-        return searchTerms.every(term => {
-            // Vérifier le nom, la description ou les ingrédients
-            return containsTerm(recipe.name.toLowerCase(), term) ||
-                   containsTerm(recipe.description.toLowerCase(), term) ||
-                   recipe.ingredients.some(ingredient => 
-                       containsTerm(ingredient.ingredient.toLowerCase(), term));
-        });
-    });
+    // // Filtrer les recettes qui correspondent aux termes de recherche
+    // return recipes.filter(recipe => {
+    //     // Vérifier si tous les termes de recherche sont présents
+    //     return searchTerms.every(term => {
+    //         // Vérifier le nom, la description ou les ingrédients
+    //         return containsTerm(recipe.name.toLowerCase(), term) ||
+    //                containsTerm(recipe.description.toLowerCase(), term) ||
+    //                recipe.ingredients.some(ingredient => 
+    //                    containsTerm(ingredient.ingredient.toLowerCase(), term));
+    //     });
+    // });
+
+    const recipesMainSearch = [];
+
+    // Extraire les mots du champ de recherche
+    let searchTerms = [];
+    let term = "";
+
+    for (let i = 0; i < query.length; i++) {
+        if (query[i] !== " ") {
+            term += query[i].toLowerCase(); // convertir en minuscules
+        } else {
+            if (term.length > 0) {
+                searchTerms.push(term); // mémoriser le mot
+                term = "";
+            }
+        }
+    }
+    if (term.length > 0) {  // mémoriser le dernier mot
+        searchTerms.push(term);
+    }
+    
+    // Parcourir les recettes
+    for (let i = 0; i < recipes.length; i++) {
+        const recipe = recipes[i];
+        let recipeOK = true;
+        // Parcourir les termes recherchés
+        for (let j = 0; j < searchTerms.length; j++) {
+            // Recherche du terme dans le nom de la recette
+            if (!containsTerm(recipe.name.toLowerCase(), searchTerms[j])) {
+                // Recherche du terme dans la description
+                if (!containsTerm(recipe.description.toLowerCase(), searchTerms[j])) {
+                    // Recherche du terme dans les ingrédients
+                    let foundInIngredients = false;
+                    for (let k = 0; k < recipe.ingredients.length; k++) {
+                        if (containsTerm(recipe.ingredients[k].ingredient.toLowerCase(), searchTerms[j])) {
+                            foundInIngredients = true;
+                            break;
+                        }
+                    }
+                    if (!foundInIngredients) {
+                        recipeOK = false;
+                    }
+                }
+            }
+        }
+
+        if (recipeOK) {
+            recipesMainSearch.push(recipe);
+        }
+    }
+
+    return (recipesMainSearch);
 }
 
 /********************************************************************
