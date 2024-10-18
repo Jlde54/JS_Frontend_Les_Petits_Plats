@@ -128,29 +128,25 @@ export function displayOptions (filterName, fieldName, recipes) {
     // Remplissage du tableau "arrayFilter" avec les options correspondantes au filtre en paramètre
     let arrayFilter = [];
 
-    for (let i = 0; i < recipes.length; i++) {
-        const recipe = recipes[i];
-    
+    recipes.forEach(recipe => {
         if (filterName === "ingredients") {
-            for (let j = 0; j < recipe[filterName].length; j++) {
-                const item = recipe[filterName][j];
+            recipe.ingredients.forEach(item => {
                 if (!arrayFilter.includes(item[fieldName])) {
                     arrayFilter.push(item[fieldName]);
                 }
-            }
+            });
         } else if (filterName === "appliance") {
             if (!arrayFilter.includes(recipe.appliance)) {
                 arrayFilter.push(recipe.appliance);
             }
         } else if (filterName === "ustensils") {
-            for (let k = 0; k < recipe[filterName].length; k++) {
-                const item = recipe[filterName][k];
+            recipe.ustensils.forEach(item => {
                 if (!arrayFilter.includes(item)) {
                     arrayFilter.push(item);
                 }
-            }
+            });
         }
-    }
+    });
 
     // Tri du tableau arrayFilter par ordre alphabétique
     arrayFilter.sort((a, b) => {
