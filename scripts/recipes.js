@@ -140,8 +140,11 @@ export function displayRecipes (recipes) {
 export function searchRecipes(query, recipes) {
     let recipesMainSearch = [];
 
+    // filtrer les caractères pour empêcher l'injection de code HTML
+    const string = controlInput(query);
+
     // Convertir toute la chaîne en minuscules, diviser la chaîne en mots et filtrer les mots vides
-    let searchTerms = query.toLowerCase().split(" ").filter(term => term.length > 0);
+    let searchTerms = string.toLowerCase().split(" ").filter(term => term.length > 0);
     
     recipesMainSearch = recipes.filter(recipe => {  // Parcourt chaque recette et ne garde que celles qui correspondent aux critères définis.
         return searchTerms.every(term => {  //  every : Vérifie que tous les termes de recherche sont présents
