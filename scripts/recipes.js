@@ -3,6 +3,17 @@
 import { setAttributes } from "../scripts/utils.js";
 
 /********************************************************************
+ * @description - filtrer les caractères pour empêcher l'injection de code HTML
+ * @function (controlInput)
+ * @param {string} - Chaîne de caractères
+ * @return {string} - Chaîne de caractères filtrée
+ */
+function controlInput(string) {
+    const invalidChars = /[<>"'/&=()]/g;  // Bloque les caractères essentiels aux injections HTML
+    return string.replace(invalidChars, '');    // Supprime les caractères interdits et retourne la chaîne de caractères
+}
+
+/********************************************************************
  * @description - vérifier si un mot existe dans une chaîne
  * @function (containsTerm)
  * @param {string} - Chaîne de caractères
